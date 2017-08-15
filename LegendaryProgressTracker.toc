@@ -1,0 +1,11 @@
+## Interface: 70200
+## Title: Legendary Progress Tracker
+## Author: Kilwen
+## Version: 0.1
+
+## SavedVariablesPerCharacter: lastLegInfo, lptEvents, printInfo, bosses
+
+embeds.xml
+LegendaryProgressTracker.lua
+Constants.lua
+EventComplete.lua
