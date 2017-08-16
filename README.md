@@ -1,6 +1,8 @@
 # Legendary Progress Tracker
 World of Warcraft Add-on
 
+## If downloading zip, make sure the folder name with all the addon files is named LegendaryProgressTracker
+
 Tracks numerous events that may reward a legendary item.  Current list includes: Emissary cache, Paragon Rep cache, war supply cache, mythic + dungeons.
 
 Commands are as follows:
