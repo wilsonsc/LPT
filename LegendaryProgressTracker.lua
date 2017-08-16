@@ -84,7 +84,7 @@ function LPT:SaveHistory()
 	for event,value in pairs(lptEvents) do
 		lastLegInfo[event] = value
 	end
-		lastLegInfo[date] = date()
+		lastLegInfo.date = date()
 		historical.numLegs = historical.numLegs + 1
 	
 end
