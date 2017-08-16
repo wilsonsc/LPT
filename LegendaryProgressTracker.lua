@@ -1,12 +1,13 @@
 LPT = LibStub("AceAddon-3.0"):NewAddon("LPT", "AceConsole-3.0", "AceEvent-3.0")
+Day = 86400
 LegILVL = 970
 
 function LPT:OnEnable()
-
+	--self:RegisterEvent("ADDON_LOADED")
     self:RegisterEvent("CHAT_MSG_LOOT")
     self:RegisterEvent("QUEST_TURNED_IN")
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-	self:RegisterEvent("UNIT_SPELLCAST_STOP")
+	--self:RegisterEvent("UNIT_SPELLCAST_STOP")
 	self:RegisterEvent("CHALLENGE_MODE_COMPLETED")
 end
 
@@ -35,22 +36,22 @@ function LPT:SlashCommands(input)
 	if command == "info" then
 		if value == "true" or value == "on" then
 			printInfo = true
+			self:Print("Informational prints on")
 		elseif value == "false" or value == "off" then
 			printInfo = false
+			self:Print("Informational prints off")
 		end
-	end
+	end	
+		
+end
+function LPT:ADDON_LOADED(arg1, arg2)
+	self:Print(arg2)
 	
-	if command == "save" then
-		LPT:SaveHistory()
-	end
-		
-		
 end
 
 function LPT:OnInitialize()
 
 	if lptEvents == nil then
-    	self:Print("Chance counts is nil, so resetting and initialising the counts")
     	LPT:ResetChances()
     end
 	
@@ -63,6 +64,16 @@ function LPT:OnInitialize()
 	--RESET WEEK LATER
 	end
 	
+	if printInfo == nil then
+		printInfo = true
+	end
+	
+	if historical == nil then
+		historical = {}
+		historical.numLegs = 0
+		historical.installedDate = time()
+	end
+	
 	LPT:RegisterChatCommand('lpt', 'SlashCommands')
 	LPT:setIslandRares()
 
@@ -73,6 +84,8 @@ function LPT:SaveHistory()
 	for event,value in pairs(lptEvents) do
 		lastLegInfo[event] = value
 	end
+		lastLegInfo[date] = date()
+		historical.numLegs = historical.numLegs + 1
 	
 end
 
@@ -103,22 +116,28 @@ end
 function LPT:PrintEvents()
 	
 	self:Print("Reporting tracked events")
-	self:Print("Emissary Chest: " .. lptEvents.emissaryChest)
-	self:Print("Weekly Chest: " .. lptEvents.weeklyChest)
+	self:Print("Emissary Chests: " .. lptEvents.emissaryChest)
+	--self:Print("Weekly Chest: " .. lptEvents.weeklyChest)
 	self:Print("Paragon Chests: " .. lptEvents.paragonChest)
-	self:Print("Normal Mode Dungeons: " .. lptEvents.normalDungeon)
-	self:Print("Heroic Dungeons: " .. lptEvents.heroicDungeon)
-	self:Print("Island Chests: " .. lptEvents.islandChest)
+	--self:Print("Normal Mode Dungeons: " .. lptEvents.normalDungeon)
+	--self:Print("Heroic Dungeons: " .. lptEvents.heroicDungeon)
+	--self:Print("Island Chests: " .. lptEvents.islandChest)
 	self:Print("Island Rares: " .. lptEvents.islandRare)
-	self:Print("Mythic 0 Dungeon Bosses: " .. lptEvents.mythicDungeon)
+	--self:Print("Mythic 0 Dungeon Bosses: " .. lptEvents.mythicDungeon)
 	self:Print("Mythic + Dungeons Ran: " ..lptEvents.mPlusDungeon)
-	self:Print("LFR Bosses: " .. lptEvents.lfr)
-	self:Print("Normal Raid Bosses: " .. lptEvents.normalRaid)
-	self:Print("Heroic Raid Bosses: " .. lptEvents.heroicRaid)
-	self:Print("Mythic Raid Bosses: " .. lptEvents.mythicRaid)
-	self:Print("World Bosses: " .. lptEvents.worldBoss)
-	self:Print("Unimplemented pvp stuff: " .. lptEvents.pvp)
+	--self:Print("LFR Bosses: " .. lptEvents.lfr)
+	--self:Print("Normal Raid Bosses: " .. lptEvents.normalRaid)
+	--self:Print("Heroic Raid Bosses: " .. lptEvents.heroicRaid)
+	--self:Print("Mythic Raid Bosses: " .. lptEvents.mythicRaid)
+	--self:Print("World Bosses: " .. lptEvents.worldBoss)
+	--self:Print("Unimplemented pvp stuff: " .. lptEvents.pvp)
 	self:Print("War Supplies Caches: " .. lptEvents.warSupplies)
+	if historical.numLegs == 0 then 
+	
+		self:Print("Time since install of addon " .. tonumber(string.format("%.1f", (time() - historical.installedDate) / Day)) .. " days")
+	else
+		self:Print("Time since last legendary " .. tonumber(string.format("%.1f", (time() - lastLegInfo.date) / Day)) .. " days")
+	end
 
 end
 
@@ -129,12 +148,14 @@ function LPT:UNIT_SPELLCAST_SUCCEEDED(arg1, arg2, arg3, ...)
 	self:Print(arg3)
 end
 ]]--
+--[[
 function LPT:UNIT_SPELLCAST_STOP(arg1, arg2, arg3, arg4, arg5, ...)
 	if LPT:GuidToID(arg5, "object") == 6478 then
 		LPT:IslandChestCompleted()
 	end
 	
 end
+]]--
 
 function LPT:CHAT_MSG_LOOT(...)
 
@@ -143,15 +164,8 @@ function LPT:CHAT_MSG_LOOT(...)
 	local event, message, _, _, _, looter = ...
 	local _, _, lootedItem = string.find(message, '(|.+|r)')
 	local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(lootedItem)
-
-	if looter ~= GetUnitName("player") then
-		if debug then
-			self:Print("This item is not for the current player");
-		end
-		return
-	end
 	
-	if quality == 5 and iLevel == LegILVL then
+	if quality == 5 and iLevel == LegILVL and looter ~= GetUnitName("player") then
 		self:Print("Congratulations on your legendary!!")
 		LPT:SaveHistory()
 		LPT:PrintEvents()
@@ -178,46 +192,17 @@ end
 
 function LPT:COMBAT_LOG_EVENT_UNFILTERED(eventName, timeStamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, argxx, destGuid, destName, destFlags, arg9, arg10, arg11, arg12, ...)
 	 
-	--if(string.sub(event,string.len(event)-7,7) == "_DAMAGE") then
-	-- if string.match(event,"UNIT_DIED") then
- -- 		self:Print("event: " .. eventName);
- -- 		self:Print("type: " .. event);
- -- 		--self:Print("damage: " .. arg12);
-
-	-- end;
-
-	-- if string.match(event,"UNIT_DIED") then
-	-- 	self:Print("Killed: " .. destName .. " with id: " .. LPT:MobId(destGuid));
-	-- end;
-	--self:Print(event)
-	--self:Print(destName)
-
 	if string.match(event,"UNIT_DIED") then
 		local mobID = LPT:GuidToID(destGuid, "mob")
+		
 		if bosses[mobID] == true then
 			bosses[mobID] = false
 		elseif isleRares[mobID] == true then
 			LPT:IsleRareCompleted(mobID)
 		end
-		--self:Print("Killed: " .. destName .. " with id: " .. LPT:MobId(destGuid));
-
-		--if LPT:IsLegendaryEnabledBoss(LPT:MobId(destGuid)) then
-			--self:Print("Legendary enabled boss!");
-			--LPT:IncrementKillCounter()
-		--elseif LPT:IsWorldBoss(LPT:MobId(destGuid)) then
-			--self:Print("Legendary enabled boss!");
-			--LPT:IncrementWorldBossCounter()
-		--else
-			--self:Print("Not a legendary enabled boss");	
-		--end
-		--LPT:printCounts()
-	end;
-
-	
-
+	end
 end
 
--- If any emissary quest is completed, then increment the daily quest counter
 function LPT:QUEST_TURNED_IN(timestamp, questId, arg3, arg4)
 	if questId == 42421 --nightfallen
 		or questId == 42233 --highmountain

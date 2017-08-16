@@ -3,7 +3,7 @@
 ## Author: Kilwen
 ## Version: 0.1
 
-## SavedVariablesPerCharacter: lastLegInfo, lptEvents, printInfo, bosses
+## SavedVariablesPerCharacter: lastLegInfo, lptEvents, printInfo, bosses, historical
 
 embeds.xml
 LegendaryProgressTracker.lua

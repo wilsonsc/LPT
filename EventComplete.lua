@@ -1,22 +1,3 @@
---[[self:Print("Reporting tracked events")
-	self:Print("Emissary Chest: " .. lptEvents.emissaryChest)
-	self:Print("Weekly Chest: " .. lptEvents.weeklyChest)
-	self:Print("Paragon Chests: " .. lptEvents.paragonChest)
-	self:Print("Normal Mode Dungeons: " .. lptEvents.normalDungeon)
-	self:Print("Heroic Dungeons: " .. lptEvents.heroicDungeon)
-	self:Print("Island Chests: " .. lptEvents.islandChest)
-	self:Print("Island Rares: " .. lptEvents.islandRare)
-	self:Print("Mythic 0 Dungeon Bosses: " .. lptEvents.mythicDungeon)
-	self:Print("Mythic + Dungeons Ran: " ..lptEvents.mPlusDungeon)
-	self:Print("LFR Bosses: " .. lptEvents.lfr)
-	self:Print("Normal Raid Bosses: " .. lptEvents.normalRaid)
-	self:Print("Heroic Raid Bosses: " .. lptEvents.heroicRaid)
-	self:Print("Mythic Raid Bosses: " .. lptEvents.mythicRaid)
-	self:Print("World Bosses: " .. lptEvents.worldBoss)
-	self:Print("Unimplemented pvp stuff: " .. lptEvents.pvp)
-	self:Print("War Supplies Caches: " ..lptEvents.warSupplies)
-	--]]
-
 function LPT:PrintInfo(event, number)
 	if printInfo then
 		self:Print("Completed " .. event .. "! " .. number .. " total since last legendary")
