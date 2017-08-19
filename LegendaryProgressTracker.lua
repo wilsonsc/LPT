@@ -189,7 +189,7 @@ end
 ]]--
 function LPT:ENCOUNTER_END(event, id, _, difficulty, _, killed)
 
-	if killed and bosses[difficulty][id] then
+	if killed and bosses[difficulty] ~= nil and bosses[difficulty][id] then
 		bosses[difficulty][id] = false
 		LPT:BossComplete(difficulty)
 	end
