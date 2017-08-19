@@ -4,7 +4,7 @@ Week = 604800
 LegILVLBase = 910
 LegILVLMid = 940
 LegILVL = 970
-LPTEpoch = 1502809200
+
 
 function LPT:OnEnable()
 	--self:RegisterEvent("ADDON_LOADED")
@@ -39,11 +39,16 @@ function LPT:SlashCommands(input)
 		LPT:PrintEvents()
 	end
 	if command == "info" then
-		if value == "true" or value == "on" then
+		if value == nil then
+			printInfo =  not printInfo
+		elseif value == "true" or value == "on" then
 			printInfo = true
-			self:Print("Informational prints on")
 		elseif value == "false" or value == "off" then
 			printInfo = false
+		end
+		if printInfo then
+			self:Print("Informational prints on")
+		else
 			self:Print("Informational prints off")
 		end
 	end	
@@ -60,7 +65,7 @@ function LPT:ADDON_LOADED(arg1, arg2)
 end
 
 function LPT:OnInitialize()
-
+	
 	if lptEvents == nil then
     	LPT:ResetChances()
     end
@@ -83,10 +88,11 @@ function LPT:OnInitialize()
 		historical = {}
 		historical.numLegs = 0
 		historical.installedDate = time()
-		historical.weekNum = time() - LPTEpoch % Week --Our "epoch" week is Aug 15th 2017
+		historical.weekNum = LPT:GetWeek() 
 	end
 	
-	if historical.weekNum == nil or historical.weekNum < time() - LTPEpoch % Week then
+	if historical.weekNum == nil or historical.weekNum < LPT:GetWeek() then
+		historical.weekNum = LPT:GetWeek()
 		LPT:initializeBoss()
 	end
 	
@@ -95,6 +101,10 @@ function LPT:OnInitialize()
 
 end
 
+function LPT:GetWeek()
+	local LPTEpoch = 1502809200
+	return (time() - LPTEpoch) / Week --Our "epoch" week is Aug 15th 2017
+end
 function LPT:SaveHistory()
 
 	for event,value in pairs(lptEvents) do
@@ -144,11 +154,13 @@ function LPT:PrintEvents()
 	self:Print("Island Rares: " .. lptEvents.islandRare)
 	--self:Print("Mythic 0 Dungeon Bosses: " .. lptEvents.mythicDungeon)
 	self:Print("Mythic + Dungeons: " ..lptEvents.mPlusDungeon)
-	self:Print("LFR Bosses: " .. lptEvents.lfr)
-	self:Print("Normal Tomb Raid Bosses: " .. lptEvents.normalRaid)
-	self:Print("Heroic Tomb Raid Bosses: " .. lptEvents.heroicRaid)
-	--self:Print("Mythic Raid Bosses: " .. lptEvents.mythicRaid)
-	--self:Print("World Bosses: " .. lptEvents.worldBoss)
+	self:Print("Raid bosses (LFR; Normal; Heroic; Mythic): " .. lptEvents.lfr .. "; " .. 
+		lptEvents.normalRaid .. "; " .. lptEvents.heroicRaid .. "; " .. lptEvents.mythicRaid)
+	--[[self:Print("LFR Bosses: " .. lptEvents.lfr)
+	self:Print("Normal Raid Bosses: " .. lptEvents.normalRaid)
+	self:Print("Heroic Raid Bosses: " .. lptEvents.heroicRaid)
+	--self:Print("Mythic Raid Bosses: " .. lptEvents.mythicRaid)]]--
+	self:Print("World Bosses: " .. lptEvents.worldBoss)
 	--self:Print("Unimplemented pvp stuff: " .. lptEvents.pvp)
 	self:Print("War Supplies Caches: " .. lptEvents.warSupplies)
 	self:Print("Blingtron 6000: " .. lptEvents.blingtron)
