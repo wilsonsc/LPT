@@ -1,9 +1,8 @@
 
 function LPT:initializeBoss()
-	bosses = {
-			  [61658] = true, [61657] = true, [107803] = true, --test
-
-			  --Dungeon Bosses
+	--mob id's
+	--[[bosses[1] = {
+		 --Dungeon Bosses
 			  [98205] = true,[98203] = true,[98207] = true,[98206] = true,[98208]= true,            --arcway
 			  [104215] = true,[104217] = true,[104218] = true,                     --court of stars
 			  [95884] = true,[96015] = true,[95886] = true,[95887] = true,[95888] = true,            --vault of the wardens
@@ -16,11 +15,175 @@ function LPT:initializeBoss()
 			  [96512] = true,[103344] = true,[99200] = true,[101403] = true,                --darkheart thicket
 			  [114262] = true,[114328] = true,[114261] = true,[114284] = true,[114251] = true,[113971] = true,[114312] = true,[114247] = true,[114895] = true,[114350] = true,[116494] = true,[114790] = true,--karazhan
 			  
+		}
+	bosses[15] ={
 			  --Raid Bosses
 			  [102672] = true,[106087] = true,[105393] = true,[100497] = true,[102679] = true,[104636] = true,[103769] = true, -- EN
 			  [114263] = true,[114344] = true,[114537] = true, -- ToV
 			  [102263] = true,[101002] = true,[104415] = true,[104288] = true,[103758] = true,[105503] = true,[110965] = true,[107699] = true,[104528] = true,[103685] = true -- NH     
-	}
+			  [115844] = true, -- goroth
+			  [116407] = true, --harjatan
+			  [115767] = true, --mistress
+			  [120996] = true, --inquis 
+	}]]--
+	
+	--encounter id's
+	--LFR
+	bosses[7] = {
+		--TOS
+		[2032] = true, --Goroth
+		[2048] = true, --Inq
+		[2036] = true, --Harj
+		[2037] = true, --Mistress
+		[2050] = true, --Sisters
+		[2054] = true, --Host
+		[2052] = true, --Maiden
+		[2038] = true, --Avatar
+		[2051] = true, --KJ
+		
+		--NH
+		[1849] = true, --Skorpyron
+		[1865] = true, --Chrono
+		[1867] = true, --Trilliax
+		[1871] = true, --Spellblade
+		[1842] = true, --Krosus
+		[1862] = true, --Tich
+		[1863] = true, --Star Augur
+		[1886] = true, --Botanist
+		[1872] = true, --Elisande
+		[1866] = true, --Guldan
+		
+		--ToV
+		[1958] = true, --Odyn
+		[1962] = true, --Guarm
+		[2008] = true, --Helya
+		
+		--EN
+		[1853] = true, --Nythendra
+		[1873] = true, --Ilgynoth
+		[1841] = true, --Ursoc
+		[1876] = true, --Spider
+		[1854] = true, --Double dragons
+		[1877] = true, --Cenarius
+		[1864] = true --Xavius
+		}
+	--Normal
+	bosses[14] = {
+		--TOS
+		[2032] = true, --Goroth
+		[2048] = true, --Inq
+		[2036] = true, --Harj
+		[2037] = true, --Mistress
+		[2050] = true, --Sisters
+		[2054] = true, --Host
+		[2052] = true, --Maiden
+		[2038] = true, --Avatar
+		[2051] = true, --KJ
+		
+		--NH
+		[1849] = true, --Skorpyron
+		[1865] = true, --Chrono
+		[1867] = true, --Trilliax
+		[1871] = true, --Spellblade
+		[1842] = true, --Krosus
+		[1862] = true, --Tich
+		[1863] = true, --Star Augur
+		[1886] = true, --Botanist
+		[1872] = true, --Elisande
+		[1866] = true, --Guldan
+		
+		--ToV
+		[1958] = true, --Odyn
+		[1962] = true, --Guarm
+		[2008] = true, --Helya
+		
+		--EN
+		[1853] = true, --Nythendra
+		[1873] = true, --Ilgynoth
+		[1841] = true, --Ursoc
+		[1876] = true, --Spider
+		[1854] = true, --Double dragons
+		[1877] = true, --Cenarius
+		[1864] = true --Xavius
+		}
+	--Heroic
+	bosses[15] = {
+		--TOS
+		[2032] = true, --Goroth
+		[2048] = true, --Inq
+		[2036] = true, --Harj
+		[2037] = true, --Mistress
+		[2050] = true, --Sisters
+		[2054] = true, --Host
+		[2052] = true, --Maiden
+		[2038] = true, --Avatar
+		[2051] = true, --KJ
+		
+		--NH
+		[1849] = true, --Skorpyron
+		[1865] = true, --Chrono
+		[1867] = true, --Trilliax
+		[1871] = true, --Spellblade
+		[1842] = true, --Krosus
+		[1862] = true, --Tich
+		[1863] = true, --Star Augur
+		[1886] = true, --Botanist
+		[1872] = true, --Elisande
+		[1866] = true, --Guldan
+		
+		--ToV
+		[1958] = true, --Odyn
+		[1962] = true, --Guarm
+		[2008] = true, --Helya
+		
+		--EN
+		[1853] = true, --Nythendra
+		[1873] = true, --Ilgynoth
+		[1841] = true, --Ursoc
+		[1876] = true, --Spider
+		[1854] = true, --Double dragons
+		[1877] = true, --Cenarius
+		[1864] = true --Xavius
+		}
+	--Mythic
+	bosses[16] = {
+		--TOS
+		[2032] = true, --Goroth
+		[2048] = true, --Inq
+		[2036] = true, --Harj
+		[2037] = true, --Mistress
+		[2050] = true, --Sisters
+		[2054] = true, --Host
+		[2052] = true, --Maiden
+		[2038] = true, --Avatar
+		[2051] = true, --KJ
+		
+		--NH
+		[1849] = true, --Skorpyron
+		[1865] = true, --Chrono
+		[1867] = true, --Trilliax
+		[1871] = true, --Spellblade
+		[1842] = true, --Krosus
+		[1862] = true, --Tich
+		[1863] = true, --Star Augur
+		[1886] = true, --Botanist
+		[1872] = true, --Elisande
+		[1866] = true, --Guldan
+		
+		--ToV
+		[1958] = true, --Odyn
+		[1962] = true, --Guarm
+		[2008] = true, --Helya
+		
+		--EN
+		[1853] = true, --Nythendra
+		[1873] = true, --Ilgynoth
+		[1841] = true, --Ursoc
+		[1876] = true, --Spider
+		[1854] = true, --Double dragons
+		[1877] = true, --Cenarius
+		[1864] = true --Xavius
+		}
 end
 
 function LPT:setIslandRares()

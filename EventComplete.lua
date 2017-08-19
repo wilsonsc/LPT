@@ -34,3 +34,26 @@ function LPT:MythicPlusCompleted()
 	lptEvents.mPlusDungeon = lptEvents.mPlusDungeon + 1
 	LPT:PrintInfo("Mythic + Dungeon", lptEvents.mPlusDungeon)
 end
+
+function LPT:BossComplete(difficultyId)
+	if difficultyId == 14 then
+		lptEvents.normalRaid = lptEvents.normalRaid + 1
+		LPT:PrintInfo("Normal Raid Boss", lptEvents.normalRaid)
+	elseif difficultyId == 15 then
+		lptEvents.heroicRaid = lptEvents.heroicRaid + 1
+		LPT:PrintInfo("Heroic Raid Boss", lptEvents.HeroicRaid)
+	elseif difficultyId == 7 then
+		lptEvents.lfr = lptEvents.lfr +1
+		LPT:PrintInfo("LFR Boss", lptEvents.lfr)
+	end
+end
+
+function LPT:BlingtronComplete()
+	lptEvents.blingtron = lptEvents.blingtron + 1
+	LPT:PrintInfo("Blingtron", lptEvents.blingtron)
+end
+
+function LPT:WorldBossCompleted()
+	lptEvents.worldBoss = lptEvents.worldBoss + 1
+	LPT:PrintInfo("World Boss", lptEvents.worldBoss)
+end

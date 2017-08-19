@@ -7,5 +7,5 @@
 
 embeds.xml
 LegendaryProgressTracker.lua
-Constants.lua
+BossInfo.lua
 EventComplete.lua
